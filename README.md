@@ -208,13 +208,32 @@ Copy this folder → start your project inside → just describe what you want
 
 ---
 
+## 10. 多工具支援 / Multi-Tool Support
+
+不一定用 Claude。Codex、GitHub Copilot、Cursor、Gemini CLI、Google Antigravity、Windsurf 等也能套用同一套指引。
+
+**做法**：以根目錄 **[`AGENTS.md`](AGENTS.md)** 為跨工具單一真相（2026 de-facto 標準，Linux Foundation 治理，幾乎所有工具原生支援）。Claude Code 用 `@AGENTS.md` import 指向它，其餘工具原生讀它——**不複製、不 symlink，只改 `AGENTS.md` 一處**。
+
+**關鍵區分（誠實點）**：
+- **Tier 1 可攜**（`AGENTS.md`）：karpathy 4 原則 + 工作流文字清單 → 任何工具都能遵守。
+- **Tier 2 Claude 專屬**（`CLAUDE.md`）：superpowers/gstack skills、rtk、caveman 是**可執行機制**，只在 Claude Code 會跑；其他工具請照 `AGENTS.md` 的文字清單手動推進（自動化降級，但流程與原則不變）。
+
+→ 完整配置表、逐工具步驟、維護鐵則見 **[docs/MULTI-TOOL-SETUP.md](docs/MULTI-TOOL-SETUP.md)**。
+
+---
+
 ## 目錄結構 / Layout
 
 ```
 .
-├── CLAUDE.md      # 專案層設定 + 路由表（Claude 讀這個）
+├── AGENTS.md      # 跨工具單一真相 SSOT（原則 + 工作流；所有 AI 工具都讀）
+├── CLAUDE.md      # Claude Code 專屬層（頂端 @AGENTS.md + skill 路由表）
 ├── README.md      # 本指引
-├── docs/          # ADR / 設計文件 / 規格的落點
+├── .github/
+│   └── copilot-instructions.md  # Copilot 薄指標 → AGENTS.md
+├── docs/
+│   ├── README.md
+│   └── MULTI-TOOL-SETUP.md       # 多工具配置指引
 └── plans/         # writing-plans 與 plan 審查產出的 plan 檔
 ```
 
