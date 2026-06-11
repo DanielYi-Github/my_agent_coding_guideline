@@ -13,11 +13,78 @@
 
 1. 這些工具**不互相競爭**，而是疊在**四個高度**：行為（karpathy）→ 巨觀流程（gstack）→ 微觀紀律（superpowers）→ 節流（rtk + caveman）。
 2. 「該用哪一種 skill 管流程？」→ **不二選一**。預設 = **gstack 當 sprint 外殼**、**superpowers 當每段實作的內核**。被迫挑一個：Web/產品→gstack；後端/CLI→superpowers。
-3. 用法：**讓意圖對上 skill 就直接用 skill**，照[階段→skill 路由表](#4-階段--skill-路由表)走，別手動重做流程。
+3. 用法：**讓意圖對上 skill 就直接用 skill**，照[階段→skill 路由表](#5-階段--skill-路由表--phase--skill-routing)走，別手動重做流程。
 
 ---
 
-## 1. 如何使用此樣板 / How to Use
+## 1. 前置安裝（一次性）/ Prerequisites (One-Time Setup)
+
+使用 Tier 2（Claude Code 自動化層）前，需先**全域安裝**以下工具。只裝一次，之後每個用本樣板的專案都自動生效。
+
+> 沒有安裝也能使用，但只有 Tier 1（AGENTS.md 原則 + 工作流文字清單）生效；Tier 2 的 skill 路由表會變成純參考文件，需手動推進。
+
+### 1-a. superpowers（微觀紀律 skill）
+
+在 **Claude Code** 內輸入：
+
+```
+/plugin install superpowers@claude-plugins-official
+```
+
+### 1-b. gstack（巨觀流程 skill）
+
+需要：Git、Bun v1.0+、Node.js（Windows 必要）。
+
+**macOS / Linux / WSL：**
+```bash
+git clone --single-branch --depth 1 https://github.com/garrytan/gstack.git ~/.claude/skills/gstack \
+  && cd ~/.claude/skills/gstack && ./setup
+```
+
+**Windows（建議在 WSL 執行上述指令）**，安裝後重開 Claude Code。
+
+### 1-c. rtk（CLI 節流 hook）
+
+**macOS / Linux：**
+```bash
+brew install rtk
+# 或
+curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+```
+
+**Windows：**
+從 [rtk releases](https://github.com/rtk-ai/rtk/releases) 下載 `rtk-x86_64-pc-windows-msvc.zip`，解壓後將 `rtk.exe` 加入 PATH。完整 hook 功能建議在 WSL 使用。
+
+安裝後執行（任一平台）：
+```bash
+rtk init -g   # 寫入全域 hook
+```
+
+**重開 Claude Code**，hook 才生效。驗證：
+```bash
+rtk --version
+rtk gain
+```
+
+### 1-d. andrej-karpathy-skills（行為原則 plugin，選用）
+
+若尚未將 karpathy 4 原則加入全域 `~/.claude/CLAUDE.md`，在 Claude Code 內輸入：
+
+```
+/plugin marketplace add forrestchang/andrej-karpathy-skills
+/plugin install andrej-karpathy-skills@karpathy-skills
+```
+
+> 本樣板的 `AGENTS.md` 已內建 karpathy 原則文字版，不裝此 plugin 也有 Tier 1 效果。
+
+### 確認就緒
+
+Claude Code 內輸入 `/brainstorming` 確認 superpowers 已載入；輸入 `/office-hours` 確認 gstack 已載入。
+
+---
+
+## 2. 如何使用此樣板 / How to Use
 
 ```
 複製本目錄 → 在裡面開新專案 → 直接對 Claude 描述需求
@@ -30,7 +97,7 @@ Copy this folder → start your project inside → just describe what you want
 
 ---
 
-## 2. 四層心智模型 / The Four-Layer Model
+## 3. 四層心智模型 / The Four-Layer Model
 
 整套方法的核心：**這些 repo 不是替代品，而是疊在不同高度，各管一件事。**
 
@@ -56,7 +123,7 @@ Copy this folder → start your project inside → just describe what you want
 
 ---
 
-## 3. 各 Repo 深度比較 / Deep Comparison
+## 4. 各 Repo 深度比較 / Deep Comparison
 
 | Repo | 所屬層 | 用途 / What it does | 典型觸發語 / Trigger | 安裝狀態 |
 |---|---|---|---|---|
@@ -67,11 +134,11 @@ Copy this folder → start your project inside → just describe what you want
 | **caveman** (`JuliusBrussee`) | 節流（輸出） | 壓縮 agent **輸出** token ~65%，去掉贅詞用片語。研究指出「限制簡短回應在某些 benchmark 反而 +26 分準確度」 | `/caveman`、「talk like caveman」 | ❌ 未裝（選用） |
 | **mattpocock/skills** (`mattpocock`) | 微觀補充 | 補充工程 skill：`grill-with-docs`（逼問+建共識+寫 ADR）、`diagnose`（結構化除錯）、`to-prd`、`improve-codebase-architecture`、`zoom-out`、`handoff` | （依各 skill） | ❌ 未裝（選用；只有 Anthropic 的 `frontend-design`） |
 
-> ⚠️ **誠實標註**：caveman 與 mattpocock/skills 目前**並未安裝**，本指引將它們列為「選用」並附[安裝指引](#7-未安裝工具安裝指引選用)。其餘四者皆已就緒。
+> ⚠️ **誠實標註**：caveman 與 mattpocock/skills 目前**並未安裝**，本指引將它們列為「選用」並附[安裝指引](#9-未安裝工具安裝指引選用--optional-installs)。其餘四者皆已就緒。
 
 ---
 
-## 4. 階段 → Skill 路由表 / Phase → Skill Routing
+## 5. 階段 → Skill 路由表 / Phase → Skill Routing
 
 開發的每個階段，對應「該觸發哪個 skill」。**讓意圖對上 skill 就直接用，別手動重做。**
 
@@ -92,7 +159,7 @@ Copy this folder → start your project inside → just describe what you want
 
 ---
 
-## 5. gstack vs superpowers：決策準則 / Which One?
+## 6. gstack vs superpowers：決策準則 / Which One?
 
 這是使用者最關心的問題。**答案：不二選一，而是合用於不同高度。**
 
@@ -119,7 +186,7 @@ Copy this folder → start your project inside → just describe what you want
 
 ---
 
-## 6. 端到端範例 / End-to-End Walkthrough
+## 7. 端到端範例 / End-to-End Walkthrough
 
 > 仿「心得驗證」敘事：一個 feature 從想法到出貨，實際的 skill 呼叫順序。
 > 情境：要在一個 Web app 加上「使用者匯出 CSV」功能。
@@ -159,7 +226,7 @@ Copy this folder → start your project inside → just describe what you want
 
 ---
 
-## 7. 節流層 / Token-Saving Layer
+## 8. 節流層 / Token-Saving Layer
 
 兩個工具省的是**不同方向**的 token：
 
@@ -181,7 +248,7 @@ Copy this folder → start your project inside → just describe what you want
 
 ---
 
-## 8. 未安裝工具安裝指引（選用）/ Optional Installs
+## 9. 未安裝工具安裝指引（選用）/ Optional Installs
 
 > 以下兩者目前**未安裝**。若要補齊「輸出節流」與「補充工程 skill」兩層，可依官方說明安裝。
 > 安裝為改動系統的動作，請自行確認後執行。
@@ -198,17 +265,17 @@ Copy this folder → start your project inside → just describe what you want
 
 ---
 
-## 9. Quickstart（5 步）
+## 10. Quickstart（5 步）
 
-1. **複製本目錄**到新專案位置（連同 `CLAUDE.md`、`docs/`、`plans/`）。
-2. 確認全域工具就緒：`rtk --version`（節流）、Claude Code 已載入 superpowers + gstack skills。
+1. 依[第 1 節](#1-前置安裝一次性--prerequisites-one-time-setup)完成全域工具安裝（superpowers、gstack、rtk）。
+2. **複製本目錄**到新專案位置（連同 `CLAUDE.md`、`docs/`、`plans/`）。
 3. 在目錄內**用自然語言描述需求**（「我想做…」）。
-4. 讓 Claude 照[路由表](#4-階段--skill-路由表)走：想法→計畫→TDD 實作→QA→ship。
+4. 讓 Claude 照[路由表](#5-階段--skill-路由表--phase--skill-routing)走：想法→計畫→TDD 實作→QA→ship。
 5. （選用）長對話想更省 token，開 `/caveman`；隨時 `rtk gain` 看節省成效。
 
 ---
 
-## 10. 多工具支援 / Multi-Tool Support
+## 11. 多工具支援 / Multi-Tool Support
 
 不一定用 Claude。Codex、GitHub Copilot、Cursor、Gemini CLI、Google Antigravity、Windsurf 等也能套用同一套指引。
 
