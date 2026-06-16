@@ -64,8 +64,8 @@ How to make the project's dev guidelines apply across **every AI coding tool**.
 | **Codex (OpenAI)** | `AGENTS.md`（root / nested / `~/.codex/AGENTS.md`） | ✅ 自動讀，無需動作 |
 | **GitHub Copilot** | `AGENTS.md` + `.github/copilot-instructions.md` | ✅ 兩者皆備，無需動作 |
 | **Cursor** | `AGENTS.md`（+ `.cursor/rules/*.mdc` 選用） | ✅ 原生讀，無需動作 |
-| **Gemini CLI** | `AGENTS.md → GEMINI.md` | ✅ 原生讀，無需動作 |
-| **Google Antigravity** | `AGENTS.md → GEMINI.md → 預設` | ✅ 原生讀，無需動作 |
+| **Gemini CLI** | `AGENTS.md` + `GEMINI.md`（薄指標） | ✅ 兩者皆備，無需動作 |
+| **Google Antigravity** | `AGENTS.md` + `GEMINI.md`（薄指標） | ✅ 兩者皆備，無需動作 |
 | **Windsurf / aider / opencode** | `AGENTS.md` | ✅ 原生讀，無需動作 |
 
 > 本樣板已備好 `AGENTS.md`、`CLAUDE.md`（含 import）、`.github/copilot-instructions.md`。
@@ -74,6 +74,9 @@ How to make the project's dev guidelines apply across **every AI coding tool**.
 ---
 
 ## 4. 逐工具設定步驟 / Step-by-Step
+
+> **自動化替代方案**：以下手動步驟也可用根目錄的 `setup.sh`（macOS/Linux/WSL/Git Bash）或 `setup.ps1`（Windows PowerShell）一鍵完成。
+> **Automated alternative**: All manual steps below can be done interactively via `setup.sh` or `setup.ps1` in the repo root.
 
 ### Claude Code（已配置）
 - `CLAUDE.md` 第一行 `@AGENTS.md` 已把通用層匯入；另有 Tier 2 skill 路由表。開啟專案即生效。
@@ -94,7 +97,7 @@ How to make the project's dev guidelines apply across **every AI coding tool**.
 
 ### Gemini CLI
 1. 在專案目錄啟動。讀取順序 `AGENTS.md → GEMINI.md`。
-2. （選用）若工具版本只認 `GEMINI.md`，建一個 `GEMINI.md` 內容只寫一行指向 `AGENTS.md`（指標，不複製）。
+2. 本樣板已包含 `GEMINI.md`（薄指標指向 `AGENTS.md`）。無需額外設定。
 
 ### Google Antigravity
 1. 開啟專案。讀取順序 `AGENTS.md → GEMINI.md → 預設`，所有 agent 啟動前都會讀。
@@ -109,7 +112,7 @@ How to make the project's dev guidelines apply across **every AI coding tool**.
 
 1. **只改 `AGENTS.md`**。所有工具的設定檔都指向它，不複製內容。
 2. 改 Tier 2（Claude 專屬 skill 路由、rtk）才動 `CLAUDE.md`。
-3. 定期確認 `.github/copilot-instructions.md`、（若有）`GEMINI.md` 仍只是「指標」而非複製品 —— 防漂移。
+3. 定期確認 `.github/copilot-instructions.md`、`GEMINI.md` 仍只是「指標」而非複製品 —— 防漂移。
 
 ---
 

@@ -8,6 +8,12 @@
 > This file holds only **Claude Code-exclusive executable mechanisms (Tier 2)**.
 > 完整說明見 [README.md](README.md)；多工具配置見 [docs/MULTI-TOOL-SETUP.md](docs/MULTI-TOOL-SETUP.md)。
 
+**優先序 / Priority**：本專案指引（`AGENTS.md` + `CLAUDE.md`）優先於全域 `~/.claude/CLAUDE.md`。當專案有對應的 skill 或設定時，以專案層為準；全域設定僅為 fallback。
+**Priority**: Project instructions (`AGENTS.md` + `CLAUDE.md`) override global `~/.claude/CLAUDE.md`. When the project provides corresponding skills or config, use the project layer; global config is fallback only.
+
+**瑣碎任務例外 / Trivial Task Override**：單行改名、格式調整、直接回答問題等瑣碎任務，不需觸發 skill，直接執行即可（呼應行為原則「瑣碎任務用判斷」）。
+**Trivial tasks** (single-line renames, formatting, direct Q&A) do not require invoking skills — just execute (per behavior principle "use judgment on trivial tasks").
+
 ---
 
 ## 四層心智模型中，Claude Code 多了什麼 / What Claude Code Adds
@@ -60,7 +66,7 @@ Pick-one rule: Web/product → gstack; backend/lib/CLI → superpowers.
 
 | 工具 | 狀態 | 層 |
 |---|---|---|
-| `multica-ai/andrej-karpathy-skills` | ✅ 已合入全域 CLAUDE.md（且本 repo `AGENTS.md` 亦有可攜版） | 行為 |
+| `multica-ai/andrej-karpathy-skills` | ✅ 已內建於 `AGENTS.md` §1（專案層權威版）；全域 CLAUDE.md 有 fallback 版 | 行為 |
 | `obra/superpowers` | ✅ 已裝 plugin | 微觀紀律 |
 | `garrytan/gstack` | ✅ 已裝 skills | 巨觀流程 |
 | `rtk-ai/rtk` | ✅ 已裝 binary + hook | 節流（輸入） |

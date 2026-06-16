@@ -91,9 +91,12 @@ Claude Code 內輸入 `/brainstorming` 確認 superpowers 已載入；輸入 `/o
 Copy this folder → start your project inside → just describe what you want
 ```
 
-- 行為層（karpathy 4 原則）已在你的全域 `~/.claude/CLAUDE.md`，**每次都生效**，不需設定。
-- 本專案的 [CLAUDE.md](CLAUDE.md) 已宣告路由表，Claude 會在對的階段自動觸發對的 skill。
+- 行為層（karpathy 4 原則）已內建於專案 `AGENTS.md` §1（權威版）；全域 `~/.claude/CLAUDE.md` 有 fallback 版，**專案層優先**。
+- 本專案的 [CLAUDE.md](CLAUDE.md) 已宣告路由表與優先序，Claude 會在對的階段自動觸發對的 skill。
 - 你只需要：**用自然語言描述意圖**（「我想做一個 X 功能」），其餘交給路由表。
+
+> **快速套用**：也可以用 `./setup.sh`（macOS/Linux/WSL/Git Bash）或 `.\setup.ps1`（Windows PowerShell）互動式安裝與套用。
+> **Quick apply**: Run `./setup.sh` or `.\setup.ps1` for interactive installation and template application.
 
 ---
 
@@ -127,7 +130,7 @@ Copy this folder → start your project inside → just describe what you want
 
 | Repo | 所屬層 | 用途 / What it does | 典型觸發語 / Trigger | 安裝狀態 |
 |---|---|---|---|---|
-| **andrej-karpathy-skills** (`multica-ai`) | 行為 | 4 條原則矯正 LLM 通病：①Think Before Coding 不亂假設、②Simplicity First 不過度設計、③Surgical Changes 只動該動的、④Goal-Driven 定義可驗證成功條件 | （always-on，無需觸發） | ✅ 已合入全域 `~/.claude/CLAUDE.md` |
+| **andrej-karpathy-skills** (`multica-ai`) | 行為 | 4 條原則矯正 LLM 通病：①Think Before Coding 不亂假設、②Simplicity First 不過度設計、③Surgical Changes 只動該動的、④Goal-Driven 定義可驗證成功條件 | （always-on，無需觸發） | ✅ 已內建於 `AGENTS.md` §1（專案層權威版）；全域 CLAUDE.md 有 fallback 版 |
 | **superpowers** (`obra`) | 微觀紀律 | 14 個 skill 的嚴格工程流程：`brainstorming`→`writing-plans`→`executing-plans`／`subagent-driven-development`→`test-driven-development`→`systematic-debugging`→`verification-before-completion`。強調 TDD、子代理並行、完成前先驗證 | 「做一個功能 / 修 bug / 寫計畫 / 重構」 | ✅ plugin v5.1.0 |
 | **gstack** (`garrytan`) | 巨觀流程 | ~60 個「角色化」skill，把 Claude 變成虛擬工程團隊（CEO/設計/工程主管/QA/發布）。Sprint：Think→Plan→Build→Review→Test→Ship→Reflect。代表：`/office-hours`、`/plan-*-review`、`/design-*`、`/qa`、`/ship`、`/browse` | 「審我的計畫 / 設計畫面 / 跑 QA / 出貨部署」 | ✅ skills 目錄 |
 | **rtk** (`rtk-ai`) | 節流（輸入） | CLI proxy，經 hook 自動改寫指令（`git status`→`rtk git status`），0 token 開銷，省 60–90% 工具輸出 token。`rtk gain` 看成效 | （auto，無需觸發） | ✅ v0.42.0 |
@@ -139,6 +142,9 @@ Copy this folder → start your project inside → just describe what you want
 ---
 
 ## 5. 階段 → Skill 路由表 / Phase → Skill Routing
+
+> **維護提醒**：本表為人類閱讀用的參考文件。機器可執行的權威版本在 [`CLAUDE.md`](CLAUDE.md)。修改時**先改 `CLAUDE.md`**，再同步本表。
+> **Maintenance**: This is a human-readable reference. The authoritative machine-readable version is in [`CLAUDE.md`](CLAUDE.md). Update `CLAUDE.md` first, then sync here.
 
 開發的每個階段，對應「該觸發哪個 skill」。**讓意圖對上 skill 就直接用，別手動重做。**
 
@@ -265,12 +271,27 @@ Copy this folder → start your project inside → just describe what you want
 
 ---
 
-## 10. Quickstart（5 步）
+## 10. Quickstart
+
+### 自動化（推薦）/ Automated (Recommended)
+
+```bash
+# macOS / Linux / WSL / Git Bash
+./setup.sh
+
+# Windows (PowerShell)
+.\setup.ps1
+```
+
+腳本會引導你：選工具 → 安裝全域依賴 → 將樣板套用到目標專案。
+The script guides you: pick tools → install global deps → apply template to target project.
+
+### 手動 / Manual
 
 1. 依[第 1 節](#1-前置安裝一次性--prerequisites-one-time-setup)完成全域工具安裝（superpowers、gstack、rtk）。
-2. **複製本目錄**到新專案位置（連同 `CLAUDE.md`、`docs/`、`plans/`）。
+2. **複製模板檔案**到目標專案（至少 `AGENTS.md` + `plans/`；Claude Code 加 `CLAUDE.md`；Copilot 加 `.github/copilot-instructions.md`；Gemini/Antigravity 加 `GEMINI.md`）。
 3. 在目錄內**用自然語言描述需求**（「我想做…」）。
-4. 讓 Claude 照[路由表](#5-階段--skill-路由表--phase--skill-routing)走：想法→計畫→TDD 實作→QA→ship。
+4. 讓 AI 工具照[路由表](#5-階段--skill-路由表--phase--skill-routing)走：想法→計畫→TDD 實作→QA→ship。
 5. （選用）長對話想更省 token，開 `/caveman`；隨時 `rtk gain` 看節省成效。
 
 ---
@@ -295,7 +316,10 @@ Copy this folder → start your project inside → just describe what you want
 .
 ├── AGENTS.md      # 跨工具單一真相 SSOT（原則 + 工作流；所有 AI 工具都讀）
 ├── CLAUDE.md      # Claude Code 專屬層（頂端 @AGENTS.md + skill 路由表）
+├── GEMINI.md      # Gemini CLI / Antigravity 薄指標 → AGENTS.md
 ├── README.md      # 本指引
+├── setup.sh       # 互動式安裝腳本（macOS/Linux/WSL/Git Bash）
+├── setup.ps1      # 互動式安裝腳本（Windows PowerShell）
 ├── .github/
 │   └── copilot-instructions.md  # Copilot 薄指標 → AGENTS.md
 ├── docs/
